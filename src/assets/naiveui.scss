@@ -1,0 +1,25 @@
+// paletteBlack: "#100B00",
+// paletteBlue: "#5Da9e9",
+// paletteWhite: "#fefffe",
+// paletteOrange: "#ff4a1c",
+// paletteGreen: "#9bc53d",
+.n-collapse {
+  .n-collapse-item {
+    border: 2px solid #5da9e9;
+    padding: 1em;
+    border-radius: 0.5em;
+    background-image: linear-gradient(45deg, #5da9e9, #9bc53d);
+    .n-collapse-item__header {
+      padding: 0;
+      .n-collapse-item__header-main {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #fff;
+        .n-collapse-item-arrow {
+          color: #fff;
+          font-size: 1.5em;
+        }
+      }
+    }
+  }
+}
