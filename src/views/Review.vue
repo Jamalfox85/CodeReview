@@ -8,10 +8,10 @@
     </n-button>
     <div class="review-header flex mb-4">
       <div>
-        <p class="text-3xl font-bold">Am I using Vue Router correctly?</p>
-        <p class="entry-topic mb-2 font-semibold text-paletteBlue">Vue Router</p>
+        <p class="text-3xl font-bold">{{ entryDetails.title }}</p>
+        <p class="entry-topic mb-2 font-semibold text-paletteBlue">{{ entryDetails.topic }}</p>
         <div class="filter-group flex flex-wrap mr-2">
-          <EntryTag v-for="(tag, index) in tags" :key="index" :label="tag" />
+          <EntryTag v-for="(tag, index) in entryDetails.tags" :key="index" :label="tag" />
         </div>
       </div>
       <div class="profile-group bg-primary-gradient h-16 w-16 rounded-full flex items-center justify-center ml-auto">
@@ -19,16 +19,35 @@
       </div>
     </div>
     <div class="review-main mb-4 flex flex-col">
-      <p class="mb-4">I’m utilizing vue router to manage the routing in vue application, but I’m not sure if there’s a better way to set it up for the project. I’m hoping I could get some thoughts on my implementation and advice.</p>
-      <n-collapse :default-expanded-names="['Code']">
+      <p class="mb-4">{{ entryDetails.description }}</p>
+      <n-collapse :default-expanded-names="['Code', 'Comments']">
         <n-collapse-item title="Code Sample" name="Code">
           <div class="review-code-group relative mb-4">
-            <VCodeBlock :code="entries[0].codeSample" :browserWindow="true" highlightjs lang="javascript" theme="github-dark" />
+            <VCodeBlock :code="entryDetails.code_sample" :browserWindow="true" highlightjs lang="javascript" theme="github-dark" />
           </div>
         </n-collapse-item>
         <n-collapse-item title="Comments" name="Comments">
-          <div class="comment-group relative mb-4">
-            <ReviewComment v-for="(comment, index) in comments" :key="index" :comment="comment" />
+          <div class="flex flex-col">
+            <div class="mb-4 flex flex-col">
+              <n-button @click="addCommentMode = true" color="#fff" class="text-paletteBlack h-10 rounded-lg ml-auto">
+                <font-awesome-icon :icon="['fas', 'plus']" class="bg-primary-gradient text-xs p-2 rounded-lg mr-2" />
+                Add Comment
+              </n-button>
+              <div v-if="addCommentMode" class="comment-input-group flex flex-col mt-2">
+                <n-input type="textarea" v-model:value="newCommentDescription" class="w-full h-24 p-2 rounded-md border border-paletteGray" placeholder="Write a comment..." />
+                <div class="flex ml-auto">
+                  <n-button color="#fff" class="text-paletteBlack h-10 rounded-lg mx-2 mt-2" @click="addCommentMode = false">
+                    <p class="bg-primary bg-primary-gradient p-2 rounded-lg">Close</p>
+                  </n-button>
+                  <n-button color="#fff" class="text-paletteBlack h-10 rounded-lg mx-2 mt-2" @click="SubmitComment">
+                    <font-awesome-icon :icon="['fas', 'paper-plane']" class="bg-primary bg-primary-gradient p-2 rounded-lg" />
+                  </n-button>
+                </div>
+              </div>
+            </div>
+            <div class="comment-group relative mb-4">
+              <ReviewComment v-for="(comment, index) in comments" :key="index" :comment="comment" />
+            </div>
           </div>
         </n-collapse-item>
       </n-collapse>
@@ -41,23 +60,52 @@ import EntryTag from "@/components/EntryTag.vue";
 import ReviewComment from "@/components/ReviewComment.vue";
 import { entries } from "@/dummydata/codeEntries.js";
 import { supabase } from "@/lib/supabaseClient";
-import { NCollapse, NCollapseItem, NButton } from "naive-ui";
+import { userStore } from "@/stores/userStore";
+import { NCollapse, NCollapseItem, NButton, NInput } from "naive-ui";
+
 export default {
-  components: { VCodeBlock, EntryTag, ReviewComment, NCollapse, NCollapseItem, NButton },
+  components: { VCodeBlock, EntryTag, ReviewComment, NCollapse, NCollapseItem, NButton, NInput },
   data() {
     return {
       tags: ["JavaScript", "Vue", "PHP", "CSS"],
       entries,
+      entryDetails: {},
       comments: [],
+      addCommentMode: false,
+      newCommentDescription: "",
     };
   },
+  methods: {
+    async SubmitComment() {
+      const session = this.store.getSession;
+      const { data, error } = await supabase
+        .from("comment")
+        .insert([
+          {
+            description: this.newCommentDescription,
+            questionSubmission_id: this.entryDetails.id,
+            user_id: session.user.id,
+          },
+        ])
+        .select();
+      if (error) {
+        window.$message.error("Error submitting comment:", error.message);
+      } else {
+        this.comments.push(data[0]);
+        this.addCommentMode = false;
+        window.$message.success("Comment submitted successfully");
+      }
+    },
+  },
   async mounted() {
-    const { data: comments } = await supabase.from("comment").select();
+    this.entryDetails = this.store.getActiveQuestion;
+    const { data: comments } = await supabase.from("comment").select().eq("questionSubmission_id", this.entryDetails.id);
     this.comments = comments;
+  },
+  setup() {
+    const store = userStore();
+    return { store };
   },
 };
 </script>
-<style lang="scss">
-.review_wrapper {
-}
-</style>
+<style lang="scss"></style>

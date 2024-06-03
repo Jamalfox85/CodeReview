@@ -25,7 +25,7 @@
     </div>
     <div class="comment-main flex flex-col justify-center grow p-2">
       <p class="comment-author font-semibold mb-2">
-        {{ comment.author }} <span class="text-sm font-normal">({{ comment.created_at }})</span>
+        {{ comment.author }} <span class="text-sm font-normal">({{ formattedDate }})</span>
       </p>
       <p class="comment-content">
         {{ comment.description }}
@@ -36,9 +36,16 @@
 
 <script>
 import { NButton } from "naive-ui";
+import { formatDistanceToNow } from "date-fns";
+
 export default {
   props: ["comment"],
   components: { NButton },
+  computed: {
+    formattedDate() {
+      return formatDistanceToNow(new Date(this.comment.created_at), { addSuffix: true });
+    },
+  },
 };
 </script>
 

@@ -1,15 +1,15 @@
 <template lang="">
   <div class="submit_wrapper flex flex-col">
-    <n-button type="text" class="text-left mb-4 bg-primary-gradient w-fit p-2 rounded-md">
-      <router-link to="/" class="text-paletteWhite font-bold flex items-center">
+    <router-link to="/" class="text-paletteWhite font-bold flex items-center">
+      <n-button type="text" class="text-paletteWhite text-left mb-4 bg-primary-gradient w-fit p-2 rounded-md">
         <font-awesome-icon :icon="['fas', 'chevron-left']" class="mr-2" />
         Back to Home
-      </router-link>
-    </n-button>
+      </n-button>
+    </router-link>
     <div class="submit-header flex mb-4">
       <p class="text-3xl font-bold">Submit a Question</p>
       <div class="submit-footer flex justify-end ml-auto">
-        <n-button class="bg-primary-gradient text-paletteWhite rounded-lg">Submit</n-button>
+        <n-button class="bg-primary-gradient text-paletteWhite rounded-lg" @click="submitQuestion">Submit</n-button>
       </div>
     </div>
     <div class="submit-main flex flex-col p-2">
@@ -31,7 +31,7 @@
           </div>
           <div class="input-group mb-4">
             <label for="question-details" class="font-semibold mb-1 text-paletteBlue">Details</label>
-            <n-input v-model:value="questionTitle" name="question-details" type="textarea" placeholder="I'm trying to create a function to..." class="border border-paletteBlue rounded-md mt-1" />
+            <n-input v-model:value="questionDescription" name="question-details" type="textarea" placeholder="I'm trying to create a function to..." class="border border-paletteBlue rounded-md mt-1" />
           </div>
         </div>
       </div>
@@ -49,6 +49,9 @@
 <script>
 import { NButton, NInput, NSelect } from "naive-ui";
 import { entries } from "@/dummydata/codeEntries.js";
+import { supabase } from "@/lib/supabaseClient";
+import { userStore } from "@/stores/userStore";
+import { openAiCodeReviewResponse } from "@/services/openai_service.js";
 
 export default {
   components: { NButton, NInput, NSelect },
@@ -87,6 +90,39 @@ export default {
         { label: "Matlab", value: "Matlab" },
       ];
     },
+  },
+  methods: {
+    async submitQuestion() {
+      const session = this.store.getSession;
+      const { data: questionData, error } = await supabase
+        .from("questionSubmission")
+        .insert({
+          title: this.questionTitle,
+          topic: this.questionTopic,
+          description: this.questionDescription,
+          tags: this.questionTags,
+          code_sample: this.codeInput,
+          user_id: session.user.id,
+        })
+        .select();
+      if (error) {
+        window.$message.error("Error submitting question:", error.message);
+      } else {
+        window.$message.success("Question submitted successfully!");
+        await supabase.from("comment").insert([
+          {
+            description: await openAiCodeReviewResponse(this.codeInput),
+            questionSubmission_id: questionData[0].id,
+            user_id: null,
+          },
+        ]);
+        this.$router.push("/");
+      }
+    },
+  },
+  setup() {
+    const store = userStore();
+    return { store };
   },
 };
 </script>
