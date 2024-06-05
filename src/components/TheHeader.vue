@@ -68,9 +68,11 @@ export default {
     },
   },
   mounted() {
-    userStore().$subscribe((store) => {
-      console.log("STORE: ", store);
-      this.userData = store?.events?.target?.userData;
+    userStore().$subscribe(async (store) => {
+      const storeData = await userStore();
+      console.log("STOREDATA: ", storeData);
+
+      this.userData = await storeData.getUserData;
       console.log("USER DATA: ", this.userData);
     });
   },
