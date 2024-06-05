@@ -108,6 +108,8 @@ export default {
   methods: {
     async signInWithEmail() {
       const { data, error } = await supabase.auth.signInWithPassword({
+        first_name: this.firstName,
+        last_name: this.lastName,
         email: this.email,
         password: this.password,
       });
