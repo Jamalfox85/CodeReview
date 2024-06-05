@@ -62,6 +62,7 @@ export default {
         window.$message.error("There was an error signing out. Please try again.");
       } else {
         this.userData = null;
+        this.store.clearSession();
         window.$message.success("You have successfully signed out.");
         this.$router.push("/login");
       }
@@ -70,10 +71,7 @@ export default {
   mounted() {
     userStore().$subscribe(async (store) => {
       const storeData = await userStore();
-      console.log("STOREDATA: ", storeData);
-
       this.userData = await storeData.getUserData;
-      console.log("USER DATA: ", this.userData);
     });
   },
 };

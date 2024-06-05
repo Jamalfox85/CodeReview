@@ -30,6 +30,10 @@ export const userStore = defineStore("userStore", {
         this.userData = newUser[0];
       }
     },
+    clearUserData() {
+      this.session = null;
+      this.userData = null;
+    },
   },
   getters: {
     getSession() {
