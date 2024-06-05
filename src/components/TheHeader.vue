@@ -62,7 +62,7 @@ export default {
         window.$message.error("There was an error signing out. Please try again.");
       } else {
         this.userData = null;
-        this.store.clearSession();
+        userStore().clearSession();
         window.$message.success("You have successfully signed out.");
         this.$router.push("/login");
       }
