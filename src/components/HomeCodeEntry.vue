@@ -3,8 +3,11 @@
   <div :class="{ active: false }" class="entry_wrapper flex flex-col rounded-lg p-4 border border-paletteBlue" @click="navToReview">
     <div class="entry-header flex">
       <p class="entry-title text-xl font-bold">{{ entry.title }}</p>
-      <div class="profile-group bg-primary-gradient h-8 w-8 rounded-full flex items-center justify-center ml-auto">
-        <font-awesome-icon :icon="['fas', 'user']" class="text-lg text-paletteWhite" />
+      <div class="profile-group ml-auto">
+        <img v-if="entry.user?.avatar_url" :src="entry.user?.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
+        <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
+          <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
+        </div>
       </div>
     </div>
     <p class="entry-topic mb-2 font-semibold text-paletteBlue">{{ entry.topic }}</p>
@@ -14,7 +17,7 @@
         <EntryTag v-for="(tag, index) in entry.tags" :key="index" :label="tag" />
       </div>
       <p class="ml-auto">
-        Uploaded by <b>{{ entry.user }}</b> {{ formattedDate }}.
+        Uploaded by <b>{{ `${entry.user.first_name} ${entry.user.last_name}` }}</b> {{ formattedDate }}.
       </p>
     </div>
   </div>
