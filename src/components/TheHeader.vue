@@ -4,17 +4,24 @@
       <img src="@/assets/images/logo.png" class="w-10 mr-2" />
       <h1 class="text-2xl">Coding Review</h1>
     </RouterLink>
-    <div class="authenticated-options flex items-center" v-if="session !== null">
-      <div :class="{ active: false }" class="notification-group mr-6 relative rounded-full w-12 h-12 hover:bg-primary-gradient flex items-center justify-center cursor-pointer">
+    <div class="authenticated-options flex items-center" v-if="userData !== null">
+      <!-- <div :class="{ active: false }" class="notification-group mr-6 relative rounded-full w-12 h-12 hover:bg-primary-gradient flex items-center justify-center cursor-pointer">
         <font-awesome-icon :icon="['fas', 'bell']" class="text-2xl header-icon" />
         <div class="notification-bubble h-3 w-3 absolute bg-paletteOrange rounded-full hidden"></div>
-      </div>
+      </div> -->
       <n-popover placement="bottom" trigger="hover">
         <template #trigger>
-          <div class="profile-group bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
-            <font-awesome-icon :icon="['fas', 'user']" class="text-2xl" />
+          <div class="profile-group ml-auto">
+            <img v-if="userData.avatar_url" :src="userData.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
+            <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
+              <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
+            </div>
           </div>
         </template>
+        <div class="flex flex-col">
+          <b>{{ `${userData.first_name} ${userData.last_name}` }}</b>
+          <small>{{ userData.email }}</small>
+        </div>
         <n-menu :options="menuOptions"> </n-menu>
       </n-popover>
     </div>
@@ -29,12 +36,17 @@ export default {
   components: { NPopover, NMenu },
   data() {
     return {
-      session: null,
+      userData: null,
     };
   },
   computed: {
     menuOptions() {
       return [
+        {
+          label: "Settings",
+          key: "settings",
+          onClick: () => this.$router.push({ name: "Settings" }),
+        },
         {
           label: "Sign Out",
           key: "sign-out",
@@ -49,16 +61,21 @@ export default {
       if (error) {
         window.$message.error("There was an error signing out. Please try again.");
       } else {
-        this.session = null;
+        this.userData = null;
         window.$message.success("You have successfully signed out.");
         this.$router.push("/login");
       }
     },
   },
   mounted() {
+    this.userData = this.store.getUserData;
     userStore().$subscribe((store) => {
-      this.session = store.events.newValue;
+      this.userData = store.events.target.userData;
     });
+  },
+  setup() {
+    const store = userStore();
+    return { store };
   },
 };
 </script>

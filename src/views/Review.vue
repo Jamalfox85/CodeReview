@@ -14,8 +14,17 @@
           <EntryTag v-for="(tag, index) in entryDetails.tags" :key="index" :label="tag" />
         </div>
       </div>
-      <div class="profile-group bg-primary-gradient h-16 w-16 rounded-full flex items-center justify-center ml-auto">
-        <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
+      <div class="flex flex-col items-center ml-auto">
+        <div class="profile-group ml-auto">
+          <img v-if="entryDetails.user?.avatar_url" :src="entryDetails.user?.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
+          <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
+            <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <p class="text-paletteBlack font-bold">{{ `${entryDetails.user?.first_name} ${entryDetails.user?.last_name}` }}</p>
+          <p class="text-paletteBlack">{{ formattedDate }}</p>
+        </div>
       </div>
     </div>
     <div class="review-main mb-4 flex flex-col">
@@ -62,6 +71,7 @@ import { entries } from "@/dummydata/codeEntries.js";
 import { supabase } from "@/lib/supabaseClient";
 import { userStore } from "@/stores/userStore";
 import { NCollapse, NCollapseItem, NButton, NInput } from "naive-ui";
+import { formatDistanceToNow } from "date-fns";
 
 export default {
   components: { VCodeBlock, EntryTag, ReviewComment, NCollapse, NCollapseItem, NButton, NInput },
@@ -74,6 +84,13 @@ export default {
       addCommentMode: false,
       newCommentDescription: "",
     };
+  },
+  computed: {
+    formattedDate() {
+      if (this.entryDetails.created_at) {
+        return formatDistanceToNow(new Date(this.entryDetails.created_at), { addSuffix: true });
+      }
+    },
   },
   methods: {
     async SubmitComment() {
@@ -99,6 +116,7 @@ export default {
   },
   async mounted() {
     this.entryDetails = this.store.getActiveQuestion;
+    console.log("ENTRY DETAILS: ", this.entryDetails);
     const { data: comments } = await supabase.from("comment").select().eq("questionSubmission_id", this.entryDetails.id);
     this.comments = comments;
   },
