@@ -70,7 +70,7 @@ export default {
   mounted() {
     this.userData = this.store.getUserData;
     userStore().$subscribe((store) => {
-      this.userData = store.events.target.userData;
+      this.userData = store?.events?.target?.userData;
     });
   },
   setup() {
