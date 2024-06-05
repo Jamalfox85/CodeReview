@@ -12,7 +12,7 @@
       <n-popover placement="bottom" trigger="hover">
         <template #trigger>
           <div class="profile-group ml-auto">
-            <img v-if="userData.avatar_url" :src="userData.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
+            <img v-if="userData?.avatar_url" :src="userData.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
             <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
               <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
             </div>
@@ -72,6 +72,7 @@ export default {
     userStore().$subscribe((store) => {
       this.userData = store?.events?.target?.userData;
     });
+    console.log("USER DATA: ", this.userData);
   },
   setup() {
     const store = userStore();
