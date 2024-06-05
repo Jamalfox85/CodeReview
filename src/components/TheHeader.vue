@@ -68,15 +68,10 @@ export default {
     },
   },
   mounted() {
-    this.userData = this.store.getUserData;
     userStore().$subscribe((store) => {
       this.userData = store?.events?.target?.userData;
+      console.log("USER DATA: ", this.userData);
     });
-    console.log("USER DATA: ", this.userData);
-  },
-  setup() {
-    const store = userStore();
-    return { store };
   },
 };
 </script>
