@@ -69,6 +69,7 @@ export default {
   },
   mounted() {
     userStore().$subscribe((store) => {
+      console.log("STORE: ", store);
       this.userData = store?.events?.target?.userData;
       console.log("USER DATA: ", this.userData);
     });
