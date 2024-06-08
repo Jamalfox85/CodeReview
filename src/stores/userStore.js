@@ -25,7 +25,7 @@ export const userStore = defineStore("userStore", {
       } else {
         const { data: newUser } = await supabase
           .from("user")
-          .insert([{ id: userId, first_name: this.session.user?.user_metadata?.name, last_name: "", email: this.session.user?.email, avatar_url: this.session.user?.user_metadata?.avatar_url }])
+          .insert([{ id: userId, first_name: this.session.user?.user_metadata?.name, last_name: "", email: this.session.user?.email, avatar_id: 0 }])
           .select();
         this.userData = newUser[0];
       }

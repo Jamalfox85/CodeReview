@@ -4,8 +4,7 @@
     <div class="entry-header flex">
       <p class="entry-title text-xl font-bold">{{ entry.title }}</p>
       <div class="profile-group ml-auto">
-        <img v-if="entry.user?.avatar_url" :src="entry.user?.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
-        <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
+        <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
           <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
         </div>
       </div>

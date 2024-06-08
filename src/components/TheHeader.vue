@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="header_wrapper h-20 bg-paletteBlack text-paletteWhite flex items-center py-4 px-8">
+  <div class="header_wrapper h-20 bg-paletteBlack text-paletteWhite border-b border-b-paletteGray flex items-center py-4 px-8">
     <RouterLink to="/" class="logo-group mr-auto flex items-center cursor-pointer">
       <img src="@/assets/images/logo.png" class="w-10 mr-2" />
       <h1 class="text-2xl">Coding Review</h1>
@@ -12,8 +12,7 @@
       <n-popover placement="bottom" trigger="hover">
         <template #trigger>
           <div class="profile-group ml-auto">
-            <img v-if="userData?.avatar_url" :src="userData.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
-            <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
+            <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
               <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
             </div>
           </div>
@@ -77,6 +76,9 @@ export default {
 };
 </script>
 <style lang="scss">
+// .header_wrapper {
+//   border-bottom: solid 1px rgb(77, 76, 76);
+// }
 .notification-group {
   &.active {
     .notification-bubble {

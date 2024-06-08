@@ -16,8 +16,7 @@
       </div>
       <div class="flex flex-col items-center ml-auto">
         <div class="profile-group ml-auto">
-          <img v-if="entryDetails.user?.avatar_url" :src="entryDetails.user?.avatar_url" class="h-12 w-12 rounded-full flex items-center justify-center" />
-          <div v-else class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
+          <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
             <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
           </div>
         </div>

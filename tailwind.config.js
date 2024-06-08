@@ -8,6 +8,7 @@ export default {
       paletteWhite: "#fefffe",
       paletteOrange: "#ff4a1c",
       paletteGreen: "#9bc53d",
+      paletteGray: "rgb(77, 76, 76)",
     },
     extend: {
       backgroundImage: {
