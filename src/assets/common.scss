@@ -1,0 +1,6 @@
+.primary-bttn {
+  &:hover {
+    background: linear-gradient(45deg, #89bee9, #a8c56c);
+    transition: 0.1s ease;
+  }
+}

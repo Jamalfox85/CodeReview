@@ -9,16 +9,22 @@
         <font-awesome-icon :icon="['fas', 'bell']" class="text-2xl header-icon" />
         <div class="notification-bubble h-3 w-3 absolute bg-paletteOrange rounded-full hidden"></div>
       </div> -->
-      <n-popover placement="bottom" trigger="hover">
+      <RouterLink class="mx-4 flex items-center" to="/"> Home </RouterLink>
+      <RouterLink class="mx-4 flex items-center" to="/myQuestions"> My Questions </RouterLink>
+      <RouterLink to="/submit" class="mr-16">
+        <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg p-2">Submit a Question</n-button>
+      </RouterLink>
+      <n-popover placement="bottom" trigger="hover" class="mx-4 flex items-center">
         <template #trigger>
           <div class="profile-group ml-auto">
             <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
               <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
+              <!-- <a href="https://www.freepik.com/icons/avatar">Icon by Freepik</a> -->
             </div>
           </div>
         </template>
         <div class="flex flex-col">
-          <b>{{ `${userData.first_name} ${userData.last_name}` }}</b>
+          <b>{{ userData.username ? userData.username : `${userData.first_name} ${userData.last_name}` }}</b>
           <small>{{ userData.email }}</small>
         </div>
         <n-menu :options="menuOptions"> </n-menu>
