@@ -9,17 +9,16 @@
         <font-awesome-icon :icon="['fas', 'bell']" class="text-2xl header-icon" />
         <div class="notification-bubble h-3 w-3 absolute bg-paletteOrange rounded-full hidden"></div>
       </div> -->
-      <RouterLink class="mx-4 flex items-center" to="/"> Home </RouterLink>
-      <RouterLink class="mx-4 flex items-center" to="/myQuestions"> My Questions </RouterLink>
+      <RouterLink class="header-link mx-4 flex items-center" to="/"> Home </RouterLink>
+      <RouterLink class="header-link mx-4 flex items-center" to="/mysamples"> My Samples </RouterLink>
       <RouterLink to="/submit" class="mr-16">
-        <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg p-2">Submit a Question</n-button>
+        <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg p-2">Submit a Sample</n-button>
       </RouterLink>
       <n-popover placement="bottom" trigger="hover" class="mx-4 flex items-center">
         <template #trigger>
           <div class="profile-group ml-auto">
-            <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
-              <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
-              <!-- <a href="https://www.freepik.com/icons/avatar">Icon by Freepik</a> -->
+            <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center overflow-hidden border-2 border-paletteBlue">
+              <img :src="profileImage" />
             </div>
           </div>
         </template>
@@ -35,10 +34,10 @@
 <script>
 import { supabase } from "@/lib/supabaseClient";
 import { userStore } from "@/stores/userStore";
-import { NPopover, NMenu } from "naive-ui";
+import { NPopover, NMenu, NButton } from "naive-ui";
 
 export default {
-  components: { NPopover, NMenu },
+  components: { NPopover, NMenu, NButton },
   data() {
     return {
       userData: null,
@@ -58,6 +57,9 @@ export default {
           onClick: () => this.signOut(),
         },
       ];
+    },
+    profileImage() {
+      return `src/assets/images/profile-images/${this.userData.avatar_id}.jpg`;
     },
   },
   methods: {
@@ -82,9 +84,6 @@ export default {
 };
 </script>
 <style lang="scss">
-// .header_wrapper {
-//   border-bottom: solid 1px rgb(77, 76, 76);
-// }
 .notification-group {
   &.active {
     .notification-bubble {
@@ -92,6 +91,11 @@ export default {
       right: 10px;
       display: block !important;
     }
+  }
+}
+.header-link {
+  &:hover {
+    text-decoration: underline;
   }
 }
 </style>

@@ -7,7 +7,7 @@ import Review from "@/views/Review.vue";
 import Submit from "@/views/Submit.vue";
 import Settings from "@/views/Settings.vue";
 import Login from "@/views/Login.vue";
-import MyQuestions from "@/views/MyQuestions.vue";
+import MySamples from "@/views/MySamples.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -15,7 +15,7 @@ const routes = [
   { path: "/submit", name: "Submit", component: Submit },
   { path: "/settings", name: "Settings", component: Settings },
   { path: "/login", name: "Login", component: Login },
-  { path: "/myquestions", name: "MyQuestions", component: MyQuestions },
+  { path: "/mysamples", name: "MySamples", component: MySamples },
 ];
 
 const router = createRouter({

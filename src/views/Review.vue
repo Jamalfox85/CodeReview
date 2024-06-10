@@ -1,21 +1,24 @@
 <template lang="">
-  <div class="review_wrapper flex flex-col rounded-md p-4">
-    <n-button type="text" class="text-left mb-4 bg-primary-gradient w-fit p-2 rounded-md">
+  <div class="review_wrapper flex flex-col p-4 bg-paletteBlack text-paletteWhite">
+    <n-button type="text" class="primary-bttn text-left mb-4 bg-primary-gradient w-fit p-2 rounded-md">
       <router-link to="/" class="text-paletteWhite font-bold flex items-center">
         <font-awesome-icon :icon="['fas', 'chevron-left']" class="mr-2" />
         Back to Home
       </router-link>
     </n-button>
     <div class="review-header flex mb-4">
-      <div>
+      <div class="grow">
         <p class="text-3xl font-bold">{{ entryDetails.title }}</p>
-        <p class="entry-topic mb-2 font-semibold text-paletteBlue">{{ entryDetails.topic }}</p>
-        <div class="filter-group flex flex-wrap mr-2">
-          <EntryTag v-for="(tag, index) in entryDetails.tags" :key="index" :label="tag" />
+        <div class="flex items-center mb-2">
+          <p class="entry-topic mr-8 font-semibold text-paletteBlue">{{ entryDetails.topic }}</p>
+          <div class="filter-group flex flex-wrap mr-2">
+            <EntryTag v-for="(tag, index) in entryDetails.tags" :key="index" :label="tag" />
+          </div>
         </div>
+        <p class="mb-4">{{ entryDetails.description }}</p>
       </div>
-      <div class="flex flex-col items-center ml-auto">
-        <div class="profile-group ml-auto">
+      <div class="w-2/5 flex flex-col items-center">
+        <div class="profile-group mb-2">
           <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
             <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
           </div>
@@ -27,7 +30,6 @@
       </div>
     </div>
     <div class="review-main mb-4 flex flex-col">
-      <p class="mb-4">{{ entryDetails.description }}</p>
       <n-collapse :default-expanded-names="['Code', 'Comments']">
         <n-collapse-item title="Code Sample" name="Code">
           <div class="review-code-group relative mb-4">
@@ -37,9 +39,11 @@
         <n-collapse-item title="Comments" name="Comments">
           <div class="flex flex-col">
             <div class="mb-4 flex flex-col">
-              <n-button @click="addCommentMode = true" color="#fff" class="text-paletteBlack h-10 rounded-lg ml-auto">
-                <font-awesome-icon :icon="['fas', 'plus']" class="bg-primary-gradient text-xs p-2 rounded-lg mr-2" />
-                Add Comment
+              <n-button @click="addCommentMode = true" color="#fff" class="review-bttn text-paletteBlack h-10 p-4 rounded-lg ml-auto">
+                <div class="bg-primary-gradient flex items-center p-2 rounded">
+                  <font-awesome-icon :icon="['fas', 'plus']" class="text-xs rounded-lg mr-2" />
+                  Add Comment
+                </div>
               </n-button>
               <div v-if="addCommentMode" class="comment-input-group flex flex-col mt-2">
                 <n-input type="textarea" v-model:value="newCommentDescription" class="w-full h-24 p-2 rounded-md border border-paletteGray" placeholder="Write a comment..." />
@@ -53,8 +57,9 @@
                 </div>
               </div>
             </div>
-            <div class="comment-group relative mb-4">
-              <ReviewComment v-for="(comment, index) in comments" :key="index" :comment="comment" />
+            <div class="comment-group flex flex-col items-center relative mb-4">
+              <h1 v-if="comments.length == 0" class="text-paletteWhite mx-auto">No comments yet</h1>
+              <ReviewComment v-else v-for="(comment, index) in comments" :key="index" :comment="comment" class="w-full" />
             </div>
           </div>
         </n-collapse-item>
@@ -115,8 +120,7 @@ export default {
   },
   async mounted() {
     this.entryDetails = this.store.getActiveQuestion;
-    console.log("ENTRY DETAILS: ", this.entryDetails);
-    const { data: comments } = await supabase.from("comment").select().eq("questionSubmission_id", this.entryDetails.id);
+    const { data: comments } = await supabase.from("comment").select("*, user(*)").eq("questionSubmission_id", this.entryDetails.id);
     this.comments = comments;
   },
   setup() {
@@ -125,4 +129,14 @@ export default {
   },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.review-bttn {
+  background-color: #fff;
+  &:hover,
+  &.active {
+    .bttn-text {
+      color: #000 !important;
+    }
+  }
+}
+</style>

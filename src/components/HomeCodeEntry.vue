@@ -1,22 +1,25 @@
 <template lang="">
   <!-- <RouterLink to="/review"> -->
   <div :class="{ active: false }" class="entry_wrapper flex flex-col rounded-lg p-4 border border-paletteBlue" @click="navToReview">
+    <!-- @click.self="navToReview" -->
     <div class="entry-header flex">
       <p class="entry-title text-xl font-bold">{{ entry.title }}</p>
       <div class="profile-group ml-auto">
-        <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center">
-          <font-awesome-icon :icon="['fas', 'user']" class="text-2xl text-paletteWhite" />
+        <div class="default-icon bg-primary-gradient h-8 w-8 rounded-full overflow-hidden flex items-center justify-center">
+          <img :src="profileImage" />
         </div>
       </div>
     </div>
-    <p class="entry-topic mb-2 font-semibold text-paletteBlue">{{ entry.topic }}</p>
+    <div class="flex items-center">
+      <p v-if="entry.topic" class="entry-topic mr-8 font-semibold text-paletteBlue" @click="topicSelected">{{ entry.topic }}</p>
+      <EntryTag v-for="(tag, index) in entry.tags" :key="index" :label="tag" />
+    </div>
     <p class="entry-description">{{ entry.description }}</p>
     <div class="entry-footer flex flex-wrap items-center mt-auto">
-      <div class="filter-group flex flex-wrap mr-2">
-        <EntryTag v-for="(tag, index) in entry.tags" :key="index" :label="tag" />
-      </div>
+      <!-- <div class="filter-group flex flex-wrap mr-2">
+      </div> -->
       <p class="ml-auto">
-        Uploaded by <b>{{ `${entry.user.first_name} ${entry.user.last_name}` }}</b> {{ formattedDate }}.
+        Uploaded by <b>{{ entry.user.username ? entry.user.username : `${entry.user.first_name} ${entry.user.last_name}` }}</b> {{ formattedDate }}.
       </p>
     </div>
   </div>
@@ -34,11 +37,17 @@ export default {
     formattedDate() {
       return formatDistanceToNow(new Date(this.entry.created_at), { addSuffix: true });
     },
+    profileImage() {
+      return `src/assets/images/profile-images/${this.entry.user.avatar_id}.jpg`;
+    },
   },
   methods: {
     async navToReview() {
       this.store.setActiveQuestion(this.entry);
       this.$router.push({ name: "Review" });
+    },
+    topicSelected() {
+      this.$emit("topicSelected", this.entry.topic);
     },
   },
   setup() {
@@ -49,17 +58,21 @@ export default {
 </script>
 <style lang="scss">
 .entry_wrapper {
-  height: 225px;
+  height: 150px;
   margin: 8px;
-  &.active {
+  box-shadow: 1px 2px 2px hsl(207 76% 64% / 0.44);
+  transition: all 0.1s;
+  &.active,
+  &:hover {
     border-left: solid 12px #5da9e9;
+    box-shadow: 6px 12px 12px hsl(207 76% 64% / 0.31);
   }
   .entry-description {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
   }
 }

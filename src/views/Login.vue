@@ -1,6 +1,7 @@
 <template>
   <div class="login_wrapper flex justify-center bg-paletteBlack">
     <div class="p-4 flex justify-center w-full">
+      <particle class="particle-bg" />
       <div class="design-block flex rounded-3xl gradient-background p-4 w-2/5">
         <div class="login-card bg-paletteBlack text-paletteWhite h-full w-full rounded-3xl p-8">
           <h1 class="text-2xl font-bold">Welcome</h1>
@@ -67,8 +68,9 @@
 <script>
 import { NInput, NButton, NSelect } from "naive-ui";
 import { supabase } from "@/lib/supabaseClient";
+import Particle from "@/components/Particle.vue";
 export default {
-  components: { NInput, NButton, NSelect },
+  components: { NInput, NButton, NSelect, Particle },
 
   data() {
     return {
@@ -86,25 +88,25 @@ export default {
     questionTagOptions() {
       return [
         { label: "JavaScript", value: "JavaScript" },
+        { label: "TypeScript", value: "TypeScript" },
         { label: "Vue", value: "Vue" },
+        { label: "React", value: "React" },
+        { label: "Angular", value: "Angular" },
         { label: "PHP", value: "PHP" },
+        { label: "Laravel", value: "Laravel" },
         { label: "CSS", value: "CSS" },
         { label: "Python", value: "Python" },
         { label: "Java", value: "Java" },
         { label: "C++", value: "C++" },
         { label: "C#", value: "C#" },
+        { label: "Objective-C", value: "Objective-C" },
         { label: "Ruby", value: "Ruby" },
         { label: "Go", value: "Go" },
-        { label: "TypeScript", value: "TypeScript" },
         { label: "Swift", value: "Swift" },
         { label: "Kotlin", value: "Kotlin" },
         { label: "Rust", value: "Rust" },
         { label: "Perl", value: "Perl" },
-        { label: "Objective-C", value: "Objective-C" },
-        { label: "Scala", value: "Scala" },
-        { label: "Shell", value: "Shell" },
         { label: "R", value: "R" },
-        { label: "Matlab", value: "Matlab" },
       ];
     },
   },
@@ -183,8 +185,14 @@ export default {
   background-size: 120% 120%;
   animation: gradient-animation 4s ease infinite;
 }
+.particle-bg {
+  position: absolute;
+  // z-index: -1;
+}
 .design-block {
   min-width: 600px;
+  position: relative;
+  // z-index: 999;
 }
 .signin-bttn {
   transition: 0.1s ease;

@@ -3,6 +3,7 @@
 // paletteWhite: "#fefffe",
 // paletteOrange: "#ff4a1c",
 // paletteGreen: "#9bc53d",
+//paletteGray: "rgb(77, 76, 76)",
 .n-collapse {
   .n-collapse-item {
     border: 2px solid #5da9e9;
@@ -20,6 +21,21 @@
           font-size: 1.5em;
         }
       }
+    }
+  }
+}
+
+.n-pagination {
+  .n-pagination-item {
+    color: #fff !important;
+    &.n-pagination-item--active {
+      color: #5da9e9 !important;
+      border: solid 2px #5da9e9 !important;
+    }
+    &.n-pagination-item--disabled {
+      color: rgb(77, 76, 76) !important;
+      background-color: black !important;
+      border: solid 1px rgb(77, 76, 76) !important;
     }
   }
 }

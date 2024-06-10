@@ -27,11 +27,19 @@ import { createDiscreteApi } from "naive-ui";
 const { message } = createDiscreteApi(["message"]);
 window.$message = message;
 
+import Particles from "@tsparticles/vue3";
+import { loadFull } from "tsparticles";
+
 const app = createApp(App);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(createPinia());
 app.use(router);
 app.use(VCodeBlock);
+app.use(Particles, {
+  init: async (engine) => {
+    await loadFull(engine);
+  },
+});
 
 app.mount("#app");

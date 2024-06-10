@@ -5,7 +5,7 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-async function openAiCodeReviewResponse(code) {
+async function openAiCodeReviewResponse(code, tags = []) {
   const response = await openai.chat.completions.create({
     messages: [
       { role: "system", content: "You are a helpful assistant." },
@@ -14,7 +14,7 @@ async function openAiCodeReviewResponse(code) {
       { role: "system", content: "A user will provide a code block. Your primary task is to improve the code quality." },
       { role: "system", content: `If possible, you should also return potential edgecases to watch out for.` },
       { role: "system", content: `Respond with a string in paragraph format.` },
-      { role: "user", content: `Please review the following code, and respond to the software developer: ${code}` },
+      { role: "user", content: `Given the following tags: ${tags}, please review the following code, and respond to the software developer: ${code}` },
     ],
     model: "gpt-3.5-turbo",
   });

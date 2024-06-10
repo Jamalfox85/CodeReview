@@ -1,6 +1,6 @@
 <template>
   <div class="app_wrapper h-screen flex flex-col">
-    <TheHeader />
+    <TheHeader class="header relative" />
     <RouterView class="page_wrapper flex grow p-8" />
   </div>
 </template>
@@ -13,4 +13,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.header {
+  z-index: 999;
+}
+</style>
