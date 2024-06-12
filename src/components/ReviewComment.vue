@@ -47,9 +47,9 @@ export default {
     },
     profileImage() {
       if (this.comment.ai_generated) {
-        return `src/assets/images/profile-images/ai.jpg`;
+        return `public/images/profile-images/ai.jpg`;
       }
-      return `src/assets/images/profile-images/1.jpg`;
+      return `public/images/profile-images/1.jpg`;
       // return `src/assets/images/profile-images/${this.userData.avatar_id}.jpg`;
     },
   },
