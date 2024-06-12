@@ -46,7 +46,6 @@ export default {
       return formatDistanceToNow(new Date(this.comment.created_at), { addSuffix: true });
     },
     profileImage() {
-      console.log("COMMENT", this.comment);
       if (this.comment.ai_generated) {
         return `src/assets/images/profile-images/ai.jpg`;
       }

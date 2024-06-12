@@ -76,6 +76,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { userStore } from "@/stores/userStore";
 import { NCollapse, NCollapseItem, NButton, NInput } from "naive-ui";
 import { formatDistanceToNow } from "date-fns";
+// import { openAiCodeReviewResponse } from "@/services/openai_service.js";
 
 export default {
   components: { VCodeBlock, EntryTag, ReviewComment, NCollapse, NCollapseItem, NButton, NInput },
@@ -122,6 +123,19 @@ export default {
     this.entryDetails = this.store.getActiveQuestion;
     const { data: comments } = await supabase.from("comment").select("*, user(*)").eq("questionSubmission_id", this.entryDetails.id);
     this.comments = comments;
+
+    // Uncomment this code to enable AI generated comments
+    // if (comments.length < 1) {
+    //   await supabase.from("comment").insert([
+    //     {
+    //       description: await openAiCodeReviewResponse(this.entryDetails.code_sample, this.entryDetails.tags, this.entryDetails.description),
+    //       questionSubmission_id: this.entryDetails.id,
+    //       user_id: null,
+    //       ai_generated: true,
+    //     },
+    //   ]);
+    //   this.$router.push("/");
+    // }
   },
   setup() {
     const store = userStore();

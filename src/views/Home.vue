@@ -88,8 +88,8 @@ export default {
     const { data, count, error } = await supabase.from("questionSubmission").select("*", { count: "exact", head: true });
     this.count = count;
 
-    // const { isFetching, error: newsError, data: newsData } = await useFetch("http://hn.algolia.com/api/v1/search?query=foo&tags=story");
-    const { isFetching, error: newsError, data: newsData } = await useFetch("http://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=15");
+    // const { isFetching, error: newsError, data: newsData } = await useFetch("https://hn.algolia.com/api/v1/search?query=foo&tags=story");
+    const { isFetching, error: newsError, data: newsData } = await useFetch("https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=15");
     const parsedNewsData = JSON.parse(newsData.value);
     this.articles = parsedNewsData.hits;
   },

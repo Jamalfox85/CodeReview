@@ -118,9 +118,10 @@ export default {
           await supabase.from("user").update({ questionTokens: tokens }).eq("id", session.user.id);
           await supabase.from("comment").insert([
             {
-              description: await openAiCodeReviewResponse(this.codeInput, this.questionTags),
+              description: await openAiCodeReviewResponse(this.codeInput, this.questionTags, this.questionDescription),
               questionSubmission_id: questionData[0].id,
               user_id: null,
+              ai_generated: true,
             },
           ]);
         } else {
