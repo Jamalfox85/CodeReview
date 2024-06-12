@@ -35,7 +35,8 @@
             <n-input v-model:value="codeInput" name="code-input" type="textarea" placeholder="I'm trying to create a function to..." class="border border-paletteBlue rounded-md mt-1 grow" />
           </div>
           <div class="submit-footer flex justify-end ml-auto">
-            <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg" @click="submitQuestion">Submit</n-button>
+            <n-spin class="mr-2" v-if="submitting" />
+            <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg" @click="submitQuestion" :disabled="submitting">Submit</n-button>
           </div>
         </div>
       </div>
@@ -47,14 +48,14 @@
   </div>
 </template>
 <script>
-import { NButton, NInput, NSelect } from "naive-ui";
+import { NButton, NInput, NSelect, NSpin } from "naive-ui";
 import { entries } from "@/dummydata/codeEntries.js";
 import { supabase } from "@/lib/supabaseClient";
 import { userStore } from "@/stores/userStore";
 import { openAiCodeReviewResponse } from "@/services/openai_service.js";
 
 export default {
-  components: { NButton, NInput, NSelect },
+  components: { NButton, NInput, NSelect, NSpin },
   data() {
     return {
       entries,
@@ -63,6 +64,7 @@ export default {
       questionDescription: "",
       questionTags: [],
       codeInput: "<h1>Your Code Will Show Here</h1>",
+      submitting: false,
     };
   },
   computed: {
@@ -93,6 +95,7 @@ export default {
   },
   methods: {
     async submitQuestion() {
+      this.submitting = true;
       const session = this.store.getSession;
       const { data: questionData, error } = await supabase
         .from("questionSubmission")
@@ -109,16 +112,23 @@ export default {
         window.$message.error("Error submitting question:", error.message);
       } else {
         window.$message.success("Question submitted successfully!");
-        console.log("CREDITS: ", this.store.userData);
-        await supabase.from("comment").insert([
-          {
-            description: await openAiCodeReviewResponse(this.codeInput, this.questionTags),
-            questionSubmission_id: questionData[0].id,
-            user_id: null,
-          },
-        ]);
+        let tokens = this.store.userData.questionTokens;
+        if (tokens > 0) {
+          tokens -= 1;
+          await supabase.from("user").update({ questionTokens: tokens }).eq("id", session.user.id);
+          await supabase.from("comment").insert([
+            {
+              description: await openAiCodeReviewResponse(this.codeInput, this.questionTags),
+              questionSubmission_id: questionData[0].id,
+              user_id: null,
+            },
+          ]);
+        } else {
+          window.$message.warning("You have no more tokens for an AI review! This app is still super new, so for now we're limiting each user to 3 AI reviews at this time. We will still submit your question for community feedback, but you will not receive an AI review.");
+        }
         this.$router.push("/");
       }
+      this.submitting = false;
     },
   },
   setup() {
