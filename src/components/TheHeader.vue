@@ -59,7 +59,7 @@ export default {
       ];
     },
     profileImage() {
-      return `src/assets/images/profile-images/${this.userData.avatar_id}.jpg`;
+      return `https://ixieai-profile-photos.s3.eu-north-1.amazonaws.com/${this.userData.avatar_id}.jpg`;
     },
   },
   methods: {

@@ -47,9 +47,9 @@ export default {
     },
     profileImage() {
       if (this.comment.ai_generated) {
-        return `public/images/profile-images/ai.jpg`;
+        return `https://ixieai-profile-photos.s3.eu-north-1.amazonaws.com/ai.jpg`;
       }
-      return `public/images/profile-images/1.jpg`;
+      return `https://ixieai-profile-photos.s3.eu-north-1.amazonaws.com/${this.entry.user.avatar_id}.jpg`;
       // return `src/assets/images/profile-images/${this.userData.avatar_id}.jpg`;
     },
   },

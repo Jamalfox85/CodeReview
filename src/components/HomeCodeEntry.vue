@@ -38,7 +38,7 @@ export default {
       return formatDistanceToNow(new Date(this.entry.created_at), { addSuffix: true });
     },
     profileImage() {
-      return `src/assets/images/profile-images/${this.entry.user.avatar_id}.jpg`;
+      return `https://ixieai-profile-photos.s3.eu-north-1.amazonaws.com/${this.entry.user.avatar_id}.jpg`;
     },
   },
   methods: {

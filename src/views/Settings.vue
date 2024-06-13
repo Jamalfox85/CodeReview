@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     getProfileImage(index) {
-      return `src/assets/images/profile-images/${index}.jpg`;
+      return `https://ixieai-profile-photos.s3.eu-north-1.amazonaws.com/${index}.jpg`;
     },
     async saveChanges() {
       const { error } = await supabase
