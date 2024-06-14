@@ -2,14 +2,22 @@
   <div class="page_wrapper bg-paletteBlack text-paletteWhite">
     <div class="home_wrapper flex flex-col grow">
       <div class="home-header flex">
-        <h1 class="mb-4 text-3xl font-bold">Home</h1>
+        <h1 class="mb-4 text-3xl fonxt-bold">Home</h1>
       </div>
-      <div class="home-filter flex flex-wrap">
+      <div class="home-filter flex-wrap max-w-[85vw] hidden md:flex">
         <div class="filter-pill mr-4 mb-2" :class="{ active: tag == 'All' }" @click="tagSelected('All')">All</div>
         <div class="filter-pill mb-2" :class="{ active: tag == questionTag.value }" v-for="questionTag in questionTagOptions" @click="tagSelected(questionTag.value)">{{ questionTag.label }}</div>
       </div>
+      <n-collapse class="md:hidden">
+        <n-collapse-item title="Tags">
+          <div class="home-filter flex flex-wrap max-w-[85vw]">
+            <div class="filter-pill mr-4 mb-2" :class="{ active: tag == 'All' }" @click="tagSelected('All')">All</div>
+            <div class="filter-pill mb-2" :class="{ active: tag == questionTag.value }" v-for="questionTag in questionTagOptions" @click="tagSelected(questionTag.value)">{{ questionTag.label }}</div>
+          </div>
+        </n-collapse-item>
+      </n-collapse>
       <div class="core-content_wrapper flex h-full">
-        <div class="core-left flex flex-col grow p-4">
+        <div class="core-left flex flex-col grow py-4 md:p-4 md:min-w-[550px]">
           <n-input type="text" class="m-2 border border-paletteBlue rounded-xl" v-model:value="searchInput" />
           <div class="flex flex-wrap justify-between items-center">
             <p class="m-2">
@@ -20,7 +28,7 @@
 
           <HomeCodeEntries class="w-full m-2 grow" :searchInput="searchInput" :tag="tag" :topic="topic" @topicSelected="topicSelected" :page="page" :itemsPerPage="itemsPerPage" :key="page" />
         </div>
-        <div class="core-right flex flex-col w-1/5 p-4">
+        <div class="core-right flex-col w-1/5 p-4 hidden md:flex">
           <h2 class="text-lg mb-4">Recently From Hacker News</h2>
           <article-block v-for="article in articles" :article="article" class="mb-4" />
         </div>
@@ -31,12 +39,12 @@
 <script>
 import HomeCodeEntries from "@/components/HomeCodeEntries.vue";
 import ArticleBlock from "@/components/ArticleBlock.vue";
-import { NButton, NInput, NPagination } from "naive-ui";
+import { NButton, NInput, NPagination, NCollapse, NCollapseItem } from "naive-ui";
 import { supabase } from "@/lib/supabaseClient";
 import { useFetch } from "@vueuse/core";
 
 export default {
-  components: { HomeCodeEntries, ArticleBlock, NButton, NInput, NPagination },
+  components: { HomeCodeEntries, ArticleBlock, NButton, NInput, NPagination, NCollapse, NCollapseItem },
   data() {
     return {
       searchInput: "",
@@ -115,6 +123,6 @@ export default {
   }
 }
 .core-left {
-  min-width: 550px;
+  // min-width: 850px !important;
 }
 </style>

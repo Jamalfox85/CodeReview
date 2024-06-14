@@ -5,7 +5,7 @@
         <h1 class="mb-4 text-3xl font-bold">My Questions</h1>
       </div>
       <div class="core-content_wrapper flex h-full">
-        <div class="grid grid-cols-2 grow p-4">
+        <div class="flex flex-col lg:grid grid-cols-2 grow p-4">
           <HomeCodeEntry class="" v-for="(entry, index) in entries" :key="index" :entry="entry" />
         </div>
       </div>
@@ -53,8 +53,5 @@ export default {
   &:hover {
     opacity: 0.8;
   }
-}
-.core-left {
-  min-width: 550px;
 }
 </style>

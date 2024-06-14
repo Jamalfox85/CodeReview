@@ -59,7 +59,7 @@
             </div>
             <div class="comment-group flex flex-col items-center relative mb-4">
               <h1 v-if="comments.length == 0" class="text-paletteWhite mx-auto">No comments yet</h1>
-              <ReviewComment v-else v-for="(comment, index) in comments" :key="index" :comment="comment" class="w-full" />
+              <ReviewComment v-else v-for="(comment, index) in comments" :key="index" :comment="comment" />
             </div>
           </div>
         </n-collapse-item>

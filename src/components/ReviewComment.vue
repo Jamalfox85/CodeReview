@@ -1,5 +1,5 @@
 <template>
-  <div class="comment_wraper bg-paletteWhite flex items-center rounded-md mb-4 p-2 relative">
+  <div class="comment_wraper bg-paletteWhite flex flex-col md:flex-row items-center rounded-md mb-4 p-2 relative md:w-full">
     <div class="comment-left mt-2 self-start p-2">
       <div class="default-icon bg-primary-gradient h-12 w-12 rounded-full flex items-center justify-center overflow-hidden border-4 border-paletteBlue" :class="{ 'border-paletteOrange': comment.ai_generated }">
         <img :src="profileImage" />

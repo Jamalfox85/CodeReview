@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center">
+    <div class="flex flex-wrap items-center">
       <p v-if="entry.topic" class="entry-topic mr-8 font-semibold text-paletteBlue" @click="topicSelected">{{ entry.topic }}</p>
       <EntryTag v-for="(tag, index) in entry.tags" :key="index" :label="tag" />
     </div>
@@ -74,6 +74,11 @@ export default {
     -webkit-line-clamp: 1;
     line-clamp: 1;
     -webkit-box-orient: vertical;
+  }
+}
+@media screen and (max-width: 768px) {
+  .entry_wrapper {
+    height: auto;
   }
 }
 </style>

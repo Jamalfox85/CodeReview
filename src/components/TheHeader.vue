@@ -9,9 +9,9 @@
         <font-awesome-icon :icon="['fas', 'bell']" class="text-2xl header-icon" />
         <div class="notification-bubble h-3 w-3 absolute bg-paletteOrange rounded-full hidden"></div>
       </div> -->
-      <RouterLink class="header-link mx-4 flex items-center" to="/"> Home </RouterLink>
-      <RouterLink class="header-link mx-4 flex items-center" to="/mysamples"> My Samples </RouterLink>
-      <RouterLink to="/submit" class="mr-16">
+      <RouterLink class="header-link mx-4 items-center hidden lg:flex" to="/"> Home </RouterLink>
+      <RouterLink class="header-link mx-4 items-center hidden lg:flex" to="/mysamples"> My Samples </RouterLink>
+      <RouterLink to="/submit" class="mr-16 hidden lg:block">
         <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg p-2">Submit a Sample</n-button>
       </RouterLink>
       <n-popover placement="bottom" trigger="hover" class="mx-4 flex items-center">
@@ -28,19 +28,30 @@
         </div>
         <n-menu :options="menuOptions"> </n-menu>
       </n-popover>
+      <font-awesome-icon :icon="['fas', 'bars']" class="text-2xl ml-8 cursor-pointer lg:hidden" @click="showDrawer = true" />
+      <n-drawer v-model:show="showDrawer" :width="'50%'" :placement="'right'" class="bg-paletteBlack text-paletteWhite">
+        <n-drawer-content title="Navigation">
+          <RouterLink class="header-link mx-4 flex items-center" to="/"> Home </RouterLink>
+          <RouterLink class="header-link mx-4 flex items-center" to="/mysamples"> My Samples </RouterLink>
+          <RouterLink to="/submit" class="mr-16">
+            <n-button class="primary-bttn bg-primary-gradient text-paletteWhite rounded-lg p-2">Submit a Sample</n-button>
+          </RouterLink>
+        </n-drawer-content>
+      </n-drawer>
     </div>
   </div>
 </template>
 <script>
 import { supabase } from "@/lib/supabaseClient";
 import { userStore } from "@/stores/userStore";
-import { NPopover, NMenu, NButton } from "naive-ui";
+import { NPopover, NMenu, NButton, NDrawer, NDrawerContent } from "naive-ui";
 
 export default {
-  components: { NPopover, NMenu, NButton },
+  components: { NPopover, NMenu, NButton, NDrawer, NDrawerContent },
   data() {
     return {
       userData: null,
+      showDrawer: false,
     };
   },
   computed: {
@@ -96,6 +107,22 @@ export default {
 .header-link {
   &:hover {
     text-decoration: underline;
+  }
+}
+.n-drawer {
+  .n-drawer-header {
+    .n-drawer-header__main {
+      color: #fff;
+    }
+  }
+  .n-drawer-body-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    & > * {
+      margin: 0 0 1em 0 !important;
+      font-size: 1.4em;
+    }
   }
 }
 </style>

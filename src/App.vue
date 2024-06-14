@@ -1,7 +1,7 @@
 <template>
   <div class="app_wrapper h-screen flex flex-col">
     <TheHeader class="header relative" />
-    <RouterView class="page_wrapper flex grow p-8" />
+    <RouterView class="page_wrapper flex grow p-4 md:p-8" />
   </div>
 </template>
 
