@@ -25,7 +25,7 @@
                   <n-input v-model:value="userName" name="user-username" type="text" placeholder="User1234" class="border border-paletteGreen rounded-md mt-1" />
                 </div>
                 <div class="input-group mb-4">
-                  <label for="question-tags" class="font-semibold mb-1 text-paletteGreen">Tags</label>
+                  <label for="question-tags" class="font-semibold mb-1 text-paletteGreen">Languages</label>
                   <n-select v-model:value="questionTags" name="question-tags" multiple :options="questionTagOptions" class="border rounded-md border-paletteGreen overflow-hidden mt-1" />
                 </div>
               </div>

@@ -28,6 +28,12 @@
                 <n-input type="text" v-model:value="email" />
               </div>
             </div>
+            <div class="p-2">
+              <label class="text-paletteWhite font-semibold">Languages</label>
+              <div class="home-filter flex-wrap max-w-[85vw] flex mt-2">
+                <div class="filter-pill mb-2" :class="{ active: tags.includes(questionTag.value) }" v-for="questionTag in questionTagOptions" @click="tagSelected(questionTag.value)">{{ questionTag.label }}</div>
+              </div>
+            </div>
             <div class="my-2 border-2 p-2">
               <label class="text-paletteWhite font-semibold">Profile</label>
               <div class="flex flex-wrap justify-evenly mt-2">
@@ -47,12 +53,12 @@
 </template>
 <script>
 import HomeCodeEntries from "@/components/HomeCodeEntries.vue";
-import { NButton, NInput } from "naive-ui";
+import { NButton, NInput, NTag } from "naive-ui";
 import { supabase } from "@/lib/supabaseClient";
 import { userStore } from "@/stores/userStore";
 import Particle from "@/components/Particle.vue";
 export default {
-  components: { HomeCodeEntries, NButton, NInput, Particle },
+  components: { HomeCodeEntries, NButton, NInput, NTag, Particle },
   data() {
     return {
       id: null,
@@ -61,11 +67,45 @@ export default {
       username: "",
       email: "",
       profileImageId: null,
+      tags: [],
     };
+  },
+  computed: {
+    questionTagOptions() {
+      return [
+        { label: "JavaScript", value: "JavaScript" },
+        { label: "TypeScript", value: "TypeScript" },
+        { label: "Vue", value: "Vue" },
+        { label: "React", value: "React" },
+        { label: "Angular", value: "Angular" },
+        { label: "PHP", value: "PHP" },
+        { label: "Laravel", value: "Laravel" },
+        { label: "CSS", value: "CSS" },
+        { label: "Python", value: "Python" },
+        { label: "Java", value: "Java" },
+        { label: "C++", value: "C++" },
+        { label: "C#", value: "C#" },
+        { label: "Objective-C", value: "Objective-C" },
+        { label: "Ruby", value: "Ruby" },
+        { label: "Go", value: "Go" },
+        { label: "Swift", value: "Swift" },
+        { label: "Kotlin", value: "Kotlin" },
+        { label: "Rust", value: "Rust" },
+        { label: "Perl", value: "Perl" },
+        { label: "R", value: "R" },
+      ];
+    },
   },
   methods: {
     getProfileImage(index) {
       return `https://ixieai-profile-photos.s3.eu-north-1.amazonaws.com/${index}.jpg`;
+    },
+    tagSelected(tag) {
+      if (this.tags.includes(tag)) {
+        this.tags = this.tags.filter((t) => t !== tag);
+      } else {
+        this.tags.push(tag);
+      }
     },
     async saveChanges() {
       const { error } = await supabase
@@ -76,6 +116,7 @@ export default {
           username: this.username,
           email: this.email,
           avatar_id: this.profileImageId,
+          tags: this.tags,
         })
         .eq("id", this.id);
       const { error: authError } = await supabase.auth.updateUser({
@@ -97,6 +138,7 @@ export default {
     this.username = userData?.username;
     this.email = userData?.email;
     this.profileImageId = userData?.avatar_id;
+    this.tags = userData?.tags;
   },
   setup() {
     const store = userStore();

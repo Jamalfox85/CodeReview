@@ -2,7 +2,7 @@
   <div class="header_wrapper h-20 bg-paletteBlack text-paletteWhite border-b border-b-paletteGray flex items-center py-4 px-8">
     <RouterLink to="/" class="logo-group mr-auto flex items-center cursor-pointer">
       <img src="@/assets/images/logo.png" class="w-10 mr-2" />
-      <h1 class="text-2xl">Coding Review</h1>
+      <h1 class="text-2xl">Ixie AI</h1>
     </RouterLink>
     <div class="authenticated-options flex items-center" v-if="userData !== null">
       <!-- <div :class="{ active: false }" class="notification-group mr-6 relative rounded-full w-12 h-12 hover:bg-primary-gradient flex items-center justify-center cursor-pointer">

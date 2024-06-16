@@ -2,7 +2,7 @@
   <div class="home_code_entries_wrapper flex justify-center relative overflow-y-scroll">
     <div class="entries-group w-full grow flex flex-col absolute p-2">
       <n-spin v-if="loading" />
-      <p v-if="!loading && entries.length == 0" class="mx-auto">No submissions match your search criteria.</p>
+      <p v-if="!loading && filteredEntries.length == 0" class="mx-auto">No submissions match the current search criteria.</p>
       <HomeCodeEntry v-for="(entry, index) in filteredEntries" :key="index" :entry="entry" @topicSelected="topicSelected" />
     </div>
   </div>
@@ -10,6 +10,7 @@
 <script>
 import HomeCodeEntry from "@/components/HomeCodeEntry.vue";
 import { userStore } from "@/stores/userStore";
+import { contentStore } from "@/stores/contentStore";
 import { supabase } from "@/lib/supabaseClient";
 import { NSpin } from "naive-ui";
 export default {
@@ -24,16 +25,14 @@ export default {
   computed: {
     filteredEntries() {
       let entries = this.entries;
+      let currentLanguage = this.cStore.getActiveLanguage;
       if (this.searchInput) {
         entries = his.entries.filter((entry) => {
           return entry?.topic.toLowerCase().includes(this.searchInput.toLowerCase()) || entry.title.toLowerCase().includes(this.searchInput.toLowerCase());
         });
       }
-      if (this.tag && this.tag !== "All") {
-        entries = entries.filter((entry) => entry.tags.includes(this.tag));
-      }
-      if (this.topic) {
-        entries = entries.filter((entry) => entry.topic === this.topic);
+      if (this.tag) {
+        entries = entries.filter((entry) => entry.tags.includes(currentLanguage));
       }
       return entries;
     },
@@ -53,7 +52,8 @@ export default {
   },
   setup() {
     const store = userStore();
-    return { store };
+    const cStore = contentStore();
+    return { store, cStore };
   },
 };
 </script>
