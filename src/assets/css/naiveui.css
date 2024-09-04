@@ -1,5 +1,35 @@
-.n-collapse {
-  border: 1px solid black;
+.n-collapse .n-collapse-item {
+  border: 2px solid #5da9e9;
   padding: 1em;
   border-radius: 0.5em;
+  background-image: linear-gradient(45deg, #5da9e9, #9bc53d);
+}
+.n-collapse .n-collapse-item .n-collapse-item__header {
+  padding: 0;
+}
+.n-collapse .n-collapse-item .n-collapse-item__header .n-collapse-item__header-main {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+}
+.n-collapse .n-collapse-item .n-collapse-item__header .n-collapse-item__header-main .n-collapse-item-arrow {
+  color: #fff;
+  font-size: 1.5em;
+}
+
+.n-pagination .n-pagination-item {
+  color: #fff !important;
+}
+.n-pagination .n-pagination-item.n-pagination-item--active {
+  color: #5da9e9 !important;
+  border: solid 2px #5da9e9 !important;
+}
+.n-pagination .n-pagination-item.n-pagination-item--disabled {
+  color: rgb(77, 76, 76) !important;
+  background-color: black !important;
+  border: solid 1px rgb(77, 76, 76) !important;
+}
+
+.n-tree .n-tree-node-content__text {
+  color: #fff !important;
 }

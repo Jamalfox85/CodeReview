@@ -25,15 +25,16 @@ export default {
   computed: {
     filteredEntries() {
       let entries = this.entries;
-      let currentLanguage = this.cStore.getActiveLanguage;
-      if (this.searchInput) {
-        entries = his.entries.filter((entry) => {
-          return entry?.topic.toLowerCase().includes(this.searchInput.toLowerCase()) || entry.title.toLowerCase().includes(this.searchInput.toLowerCase());
-        });
-      }
-      if (this.tag) {
-        entries = entries.filter((entry) => entry.tags.includes(currentLanguage));
-      }
+      // console.log("entries", entries);
+      // let currentLanguage = this.cStore.getActiveLanguage;
+      // if (this.searchInput) {
+      //   entries = his.entries.filter((entry) => {
+      //     return entry?.topic.toLowerCase().includes(this.searchInput.toLowerCase()) || entry.title.toLowerCase().includes(this.searchInput.toLowerCase());
+      //   });
+      // }
+      // if (this.tag) {
+      //   entries = entries.filter((entry) => entry.tags.includes(currentLanguage));
+      // }
       return entries;
     },
   },

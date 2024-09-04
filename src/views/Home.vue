@@ -1,11 +1,11 @@
 <template lang="">
   <div class="page_wrapper bg-paletteBlack text-paletteWhite">
-    <n-tabs :on-update:value="tagSelected" v-if="tags.length > 0" :key="tags[0]" :type="'card'" animated :placement="'left'">
+    <home-default />
+    <!-- <n-tabs :on-update:value="tagSelected" v-if="tags.length > 0" :key="tags[0]" :type="'card'" animated :placement="'left'">
       <n-tab-pane :name="tag" :tab="tag" v-for="tag in tags">
-        <home-default />
       </n-tab-pane>
     </n-tabs>
-    <n-spin v-else class="m-auto" />
+    <n-spin v-else class="m-auto" /> -->
   </div>
 </template>
 <script>
@@ -36,6 +36,7 @@ export default {
           this.cStore.setActiveLanguage(this.tags[0]);
           return;
         }
+        console.log("userData", userData);
         this.tags = userData.tags;
       },
       deep: true,

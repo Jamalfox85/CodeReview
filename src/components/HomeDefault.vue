@@ -14,7 +14,7 @@
             <HomeCodeEntries class="w-full m-2 grow" :searchInput="searchInput" :tag="tag" :topic="topic" @topicSelected="topicSelected" :page="page" :itemsPerPage="itemsPerPage" :key="page" />
           </div>
           <div class="core-right flex-col w-1/5 p-4 hidden md:flex">
-            <h2 class="text-lg mb-4">Recent {{ activeLanguage }} Articles From Hacker News</h2>
+            <h2 class="text-lg mb-4">Recent Articles From Hacker News</h2>
             <article-block v-for="article in articles" :article="article" class="mb-4" />
           </div>
         </div>
